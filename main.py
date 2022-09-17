@@ -50,7 +50,7 @@ def main(args):
     start_time = time.time()
 
     if args.method == 'perceptron':
-        train_set, train_labels, dev_set,dev_labels = reader.load_dataset(args.dataset_file)
+        train_set, train_labels, dev_set, dev_labels = reader.load_dataset(args.dataset_file)
         pred_p = c.classifyPerceptron(train_set, train_labels, dev_set, args.lrate, args.max_iter)
         print("Perceptron")
         accuracy,f1,precision,recall = compute_accuracies(pred_p, dev_labels)

@@ -34,15 +34,28 @@ return - a list containing predicted labels for dev_set
 import numpy as np
 from sklearn.linear_model import Perceptron
 
+# development purposes 
+import reader
+
 def trainPerceptron(train_set, train_labels, learning_rate, max_iter):
     # TODO: Write your code here
     # return the trained weight and bias parameters
+    print(train_set)
     return W, b
 
 def classifyPerceptron(train_set, train_labels, dev_set, learning_rate, max_iter):
     # TODO: Write your code here
     # Train perceptron model and return predicted labels of development set
+    W, b = trainPerceptron(train_set, train_labels, learning_rate, max_iter)
 
-    return []
+    return train_labels
 
-
+# development purposes
+def main():
+    train_set, train_labels, dev_set, dev_labels = reader.load_dataset('data')
+    pred_p = classifyPerceptron(train_set, train_labels, dev_set, 1, 10)
+    print("Perceptron")
+    
+if __name__ == "__main__":
+    main()
+    
