@@ -34,28 +34,35 @@ return - a list containing predicted labels for dev_set
 import numpy as np
 from sklearn.linear_model import Perceptron
 
-# development purposes 
-import reader
+
+def predict(x_i, w, bias):
+    yhat = np.dot(x_i, w)+ bias
+    prediction = np.where(yhat>=0, 1, 0)
+    return prediction
+
+def update(y_actual, y_prediction, learning_rate):
+    return (learning_rate * (y_actual - y_prediction))
 
 def trainPerceptron(train_set, train_labels, learning_rate, max_iter):
     # TODO: Write your code here
     # return the trained weight and bias parameters
-    print(train_set)
+    
+    W = np.zeros(len(train_set[0]))
+    b = 0
+
+    y_actual = [1 if i else 0 for i in train_labels]
+
+    for _ in range(max_iter):
+        for i, x_i in enumerate(train_set):
+            y_prediction = predict(x_i, W, b)
+            W += update(y_actual[i], y_prediction, learning_rate) * x_i
+            b += update(y_actual[i], y_prediction, learning_rate)
+
     return W, b
 
 def classifyPerceptron(train_set, train_labels, dev_set, learning_rate, max_iter):
     # TODO: Write your code here
     # Train perceptron model and return predicted labels of development set
     W, b = trainPerceptron(train_set, train_labels, learning_rate, max_iter)
-
-    return train_labels
-
-# development purposes
-def main():
-    train_set, train_labels, dev_set, dev_labels = reader.load_dataset('data')
-    pred_p = classifyPerceptron(train_set, train_labels, dev_set, 1, 10)
-    print("Perceptron")
-    
-if __name__ == "__main__":
-    main()
-    
+    prediction = predict(dev_set, W, b)
+    return prediction.tolist()
